@@ -1,6 +1,7 @@
 ﻿using FuncionariosApp.Contexts;
 using FuncionariosApp.Entities;
 using FuncionariosApp.Enums;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -45,7 +46,6 @@ namespace FuncionariosApp.Controllers
                 Console.Write("INFORME a DataAdmissao do funcionário (dd/mm/aaaa)....: ");
                 string dataAdmissão = Console.ReadLine() ?? string.Empty;
 
-                //TODO - Verificar para aprendizado
                 funcionario.DataAdmissao = DateOnly.ParseExact(dataAdmissão, "dd/MM/yyyy",InvariantCulture);
 
                 Console.Write("INFORME o Cargo do funcionário....: ");
@@ -64,7 +64,6 @@ namespace FuncionariosApp.Controllers
                 Console.Write("Informe o  tipo de contratação do funcionário....: ");
                 funcionario.Tipo = (TipoContratacao) int.Parse(Console.ReadLine() ?? string.Empty);
 
-                // 2. RELACIONAMENTO: Selecionar a Empresa
                 Console.WriteLine("\nSELECIONE A EMPRESA DO FUNCIONÁRIO:");
                 for (int i = 0; i < empresas.Count; i++)
                 {
@@ -78,7 +77,6 @@ namespace FuncionariosApp.Controllers
                     Console.Write($"ESCOLHA UMA OPÇÃO (1 a {empresas.Count}): ");
                 } while (!int.TryParse(Console.ReadLine(), out escolha) || escolha < 1 || escolha > empresas.Count);
 
-                //// COmo Associamos o ID da empresa selecionada ao EmpresaId do funcionário?
                 funcionario.EmpresaId = empresas[escolha - 1].Id;
 
                 dataContext.Funcionarios.Add(funcionario);
@@ -93,5 +91,26 @@ namespace FuncionariosApp.Controllers
  
             }
         }
+
+        public void ConsultarFuncionario()
+        {
+
+            var dataContext = new DataContext();
+
+            //Consultando todas as empresas em ordem alfabetica
+            var funcionarios = dataContext.Funcionarios.OrderBy(e => e.Cpf).ToList();
+
+            //Exibindo as empresas:
+            foreach (var item in funcionarios)
+            {
+                Console.WriteLine($"NOME...........: {item.Nome}");
+                Console.WriteLine($"CARGO.: {item.Cargo}");
+                Console.WriteLine($"CPF.........: {item.Cpf}");
+                Console.WriteLine($"SALARIO.........: {item.Salario}");
+                Console.WriteLine($"TIPO DE FUNCIONARIO.........: {item.Tipo}");
+                Console.WriteLine($"DATA DE ADMISSÃO.........: {item.DataAdmissao}");
+                Console.WriteLine("...");
+            }
+        }
     }
-}
+} 

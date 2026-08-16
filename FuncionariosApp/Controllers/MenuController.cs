@@ -13,6 +13,7 @@ namespace FuncionariosApp.Controllers
             Console.WriteLine("(1) CADASTRAR EMPRESA");
             Console.WriteLine("(2) CONSULTAR EMPRESAS");
             Console.WriteLine("(3) CADASTRAR fUNCIONARIO");
+            Console.WriteLine("(4) CONSULTAR fUNCIONARIO");
 
             Console.Write("\nINFORME A OPÇÃO DESEJADA: ");
             var opcao = Console.ReadLine() ?? string.Empty;
@@ -30,6 +31,9 @@ namespace FuncionariosApp.Controllers
                     break;
                 case "3":
                     funcionarioController.CadastrarFuncionario();
+                    break;
+                case "4":
+                    funcionarioController.ConsultarFuncionario();
                     break;
                 default:
                     Console.WriteLine("\nOPÇÃO INVÁLIDA!");
